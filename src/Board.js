@@ -62,7 +62,7 @@
     },
 
 
-/*
+    /*    
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
@@ -137,31 +137,62 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
+    // hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+    //   console.log('input', majorDiagonalColumnIndexAtFirstRow);
+    //   var count = 0;
+    //   var rowIndex = 0;
+    //   if (majorDiagonalColumnIndexAtFirstRow < 0) {
+    //     rowIndex = -(majorDiagonalColumnIndexAtFirstRow);
+    //     console.log('output', rowIndex);
+    //   }
+    //   for (var i = rowIndex; i < this.rows().length; i++) {
+    //     if (this._isInBounds(i, majorDiagonalColumnIndexAtFirstRow + i)) {
+    //       //console.log('value in ',this.rows()[i][majorDiagonalColumnIndexAtFirstRow + i]);
+    //       if (this.rows()[i][majorDiagonalColumnIndexAtFirstRow + i] === 1) {
+    //         count++;
+    //       }
+    //       if (count > 1) {
+    //         return true;
+    //       }
+    //     }
+    //   }
+    //   return false; // fixme
+    // },
+    
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      console.log('input' , majorDiagonalColumnIndexAtFirstRow);
+      console.log('input', majorDiagonalColumnIndexAtFirstRow);
       var count = 0;
       var rowIndex = 0;
+      var colIndex;
       if (majorDiagonalColumnIndexAtFirstRow < 0) {
         rowIndex = -(majorDiagonalColumnIndexAtFirstRow);
-        console.log('output' , rowIndex);
+        colIndex = 0;
+        console.log('output', rowIndex);
+      } else {
+        colIndex = majorDiagonalColumnIndexAtFirstRow;
       }
       for (var i = rowIndex; i < this.rows().length; i++) {
-        if (this._isInBounds(i, majorDiagonalColumnIndexAtFirstRow + i)) {
-          //console.log(majorDiagonalColumnIndexAtFirstRow);
-          if (this.rows()[i][majorDiagonalColumnIndexAtFirstRow + i] === 1) {
+        debugger;
+        if (this._isInBounds(i, colIndex)) {
+          //console.log('value in ',this.rows()[i][majorDiagonalColumnIndexAtFirstRow + i]);
+          if (this.rows()[i][colIndex] === 1) {
             count++;
           }
           if (count > 1) {
             return true;
           }
+          colIndex++;
+        } else {
+          return false;
         }
+        // colIndex++; 
       }
       return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      for (var i = 0; i < this.rows().length; i++) {
+      for (var i = 0; i < this.get('n'); i++) {
         if (this.hasAnyMajorDiagonalConflicts(i)) {
           return true;
         }
