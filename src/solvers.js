@@ -56,10 +56,53 @@ window.countNRooksSolutions = function(n) {
   }; //fixme
   recursive();
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+  return solutionCount; 
 };
-window.findNQueensSolutions = function(n) {
-  
+window.findNQueensSolution = function(n) {
+  var solution = [];
+  var nQueensplaced = false;
+  var queens = 0;
+  var queensBoard = new Board({n: n});
+  if (n === 0) {
+    return solution;
+  } else if (n === 1) {
+    return [[1]];
+  } else if (n === 2) {
+    return [[], []];
+  } else if (n === 3) {
+    return [[], [], []];
+  } 
+  var recursive = function(row) {
+    row = row || 0;
+    if (n === row && queens === n) {
+      nQueensplaced = true;
+    } else {
+      for (var i = 0; i < n; i++) {
+        queensBoard.togglePiece(row, i);
+        queens++;
+        solution.push(queensBoard.rows()[row]);
+        if (!queensBoard.hasAnyQueensConflicts()) {
+          recursive (row + 1);
+          if (nQueensplaced) {
+            break;
+          } else {
+            queens--;
+            if (queensBoard.rows()[row][i]) {
+              queensBoard.togglePiece(row, i);
+              solution.pop();
+            }
+          }
+        } else {
+          queensBoard.togglePiece( row, i);
+          queens--;
+          solution.pop();
+        }
+      }
+    }
+  };
+  recursive();
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  return solution;
 };
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 
